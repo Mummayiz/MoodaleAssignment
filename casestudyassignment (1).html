@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Application Assistant · Product Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF8F3;
+    --ink:#1B1C28;
+    --indigo:#1E2038;
+    --indigo-soft:#2A2D4D;
+    --accent:#5B5BF0;
+    --green:#2FA36B;
+    --amber:#E3A72F;
+    --red:#DA5A3C;
+    --muted:#73726B;
+    --line:#E4E0D6;
+    --chip:#F0EDE4;
+    --maxw:1080px;
+    --disp:'Space Grotesk',sans-serif;
+    --body:'Inter',sans-serif;
+    --mono:'Space Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:var(--body);line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--accent);color:#fff}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--accent);font-weight:700;
+  }
+  h1,h2,h3{font-family:var(--disp);line-height:1.08;letter-spacing:-.02em}
+  a{color:inherit}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(250,248,243,.82);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:58px}
+  .brand{font-family:var(--disp);font-weight:700;font-size:16px;letter-spacing:-.01em;display:flex;gap:10px;align-items:center}
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(47,163,107,.15)}
+  .topnav{display:flex;gap:26px;font-size:13px;font-weight:500}
+  .topnav a{color:var(--muted);text-decoration:none;transition:color .2s}
+  .topnav a:hover{color:var(--ink)}
+  @media(max-width:720px){.topnav{display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{padding:88px 0 56px}
+  .hero .kick{margin-bottom:22px}
+  .hero h1{font-size:clamp(38px,6.2vw,68px);font-weight:700;max-width:16ch}
+  .hero h1 em{font-style:normal;color:var(--accent)}
+  .hero p.lede{margin-top:24px;font-size:clamp(17px,2.2vw,20px);color:var(--muted);max-width:56ch}
+  .herometa{margin-top:30px;display:flex;flex-wrap:wrap;gap:10px}
+  .tag{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;
+    padding:7px 12px;border:1px solid var(--line);border-radius:100px;color:var(--muted)}
+
+  /* ---------- pipeline signature ---------- */
+  .pipe{margin:52px 0 8px;position:relative;padding:34px 0}
+  .pipe .rail{position:relative;height:2px;background:var(--line);margin:0 6%}
+  .pipe .runner{position:absolute;top:-3px;width:8px;height:8px;border-radius:50%;
+    background:var(--accent);box-shadow:0 0 0 5px rgba(91,91,240,.16);
+    animation:run 6s cubic-bezier(.65,0,.35,1) infinite}
+  @keyframes run{
+    0%{left:0}12%{left:0}
+    30%{left:33%}42%{left:33%}
+    60%{left:66%}72%{left:66%}
+    90%{left:100%}100%{left:100%}
+  }
+  .nodes{display:flex;justify-content:space-between;margin:0 6%;margin-top:-5px;position:relative}
+  .node{display:flex;flex-direction:column;align-items:center;gap:11px;width:0;transform:translateX(-50%)}
+  .node:first-child{align-items:flex-start;transform:translateX(0)}
+  .node:last-child{align-items:flex-end;transform:translateX(-100%)}
+  .node .pip{width:11px;height:11px;border-radius:50%;background:var(--paper);border:2px solid var(--line)}
+  .node.on .pip{border-color:var(--accent);background:var(--accent)}
+  .node .lbl{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);white-space:nowrap}
+  @media(max-width:600px){.node .lbl{font-size:9px}}
+
+  /* ---------- sections ---------- */
+  section{padding:64px 0;border-top:1px solid var(--line)}
+  .sechead{display:flex;gap:20px;align-items:baseline;margin-bottom:34px}
+  .num{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--accent);padding-top:6px}
+  .sechead h2{font-size:clamp(26px,3.6vw,38px);font-weight:600}
+  .sechead .q{font-family:var(--mono);font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:8px}
+  .prose{max-width:64ch;font-size:16.5px}
+  .prose p{margin-bottom:18px}
+  .prose strong{font-weight:600}
+  .lead{font-size:20px;font-family:var(--disp);font-weight:500;line-height:1.4;letter-spacing:-.01em;margin-bottom:24px;max-width:40ch}
+
+  /* two-column cards */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:8px}
+  @media(max-width:760px){.cols{grid-template-columns:1fr}}
+  .card{border:1px solid var(--line);border-radius:14px;padding:24px;background:#fff}
+  .card h3{font-size:17px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:9px}
+  .card h3 .mk{width:8px;height:8px;border-radius:2px}
+  .card.build h3 .mk{background:var(--green)}
+  .card.hold h3 .mk{background:var(--amber)}
+  .card.yes h3 .mk{background:var(--green);border-radius:50%}
+  .card.no h3 .mk{background:var(--muted);border-radius:50%}
+  .card ul{list-style:none}
+  .card li{padding:11px 0;border-top:1px solid var(--line);font-size:15px}
+  .card li:first-child{border-top:none;padding-top:0}
+  .card li b{font-weight:600;font-family:var(--disp)}
+  .card li span{color:var(--muted);font-size:14px}
+
+  /* flow steps */
+  .flow{display:grid;gap:2px;counter-reset:s}
+  .step{display:grid;grid-template-columns:56px 1fr;gap:20px;padding:20px 0;border-top:1px solid var(--line);align-items:start}
+  .step:first-child{border-top:none}
+  .step .sn{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:700;padding-top:2px}
+  .step h3{font-size:17px;font-weight:600;margin-bottom:5px}
+  .step p{color:var(--muted);font-size:15px;max-width:60ch}
+
+  /* challenges */
+  .chal{display:grid;gap:2px}
+  .ch{padding:22px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr;gap:8px}
+  .ch:first-child{border-top:none}
+  .ch .ct{font-size:18px;font-weight:600;font-family:var(--disp);display:flex;gap:12px}
+  .ch .ct .n{color:var(--accent);font-family:var(--mono);font-size:14px;padding-top:3px}
+  .ch .cp{color:var(--muted);font-size:15.5px;max-width:70ch;padding-left:26px}
+  .ch .cp b{color:var(--ink);font-weight:600}
+
+  /* feature hero (dark) */
+  .feature{background:var(--indigo);color:#EDECF6;border-radius:20px;padding:44px;margin-top:8px;position:relative;overflow:hidden}
+  .feature .fx{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#9C9CEF}
+  .feature h3{font-size:clamp(24px,4vw,34px);font-weight:600;margin:14px 0 16px;color:#fff;max-width:20ch}
+  .feature p{color:#B9B9CE;max-width:60ch;margin-bottom:14px;font-size:16px}
+  .flags{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0 8px}
+  .flag{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);padding:9px 14px;border-radius:100px}
+  .flag .d{width:9px;height:9px;border-radius:50%}
+  .roadmap{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:26px}
+  @media(max-width:640px){.roadmap{grid-template-columns:1fr}}
+  .rm{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px}
+  .rm b{color:#fff;font-family:var(--disp);font-size:15px}
+  .rm p{font-size:14px;color:#A9A9C2;margin:6px 0 0}
+
+  /* stack */
+  .stack{display:grid;gap:2px}
+  .sr{display:grid;grid-template-columns:150px 1fr;gap:20px;padding:16px 0;border-top:1px solid var(--line)}
+  .sr:first-child{border-top:none}
+  .sr .k{font-family:var(--mono);font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--accent);font-weight:700;padding-top:2px}
+  .sr .v{font-size:15px;color:var(--ink)}
+  .sr .v span{color:var(--muted)}
+  @media(max-width:600px){.sr{grid-template-columns:1fr;gap:4px}}
+
+  /* ---------- interactive demo ---------- */
+  .demo-sec{background:var(--indigo);color:#E9E9F4;border-top:none}
+  .demo-sec .sechead h2{color:#fff}
+  .demo-sec .q{color:#9C9CEF}
+  .demo-sec .num{color:#9C9CEF}
+  .demo-sec .prose{color:#B9B9CE}
+  .console{background:#15162A;border:1px solid rgba(255,255,255,.1);border-radius:18px;overflow:hidden;margin-top:28px;box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}
+  .console .bar{display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.08);background:#101124}
+  .console .bar .dots{display:flex;gap:6px}
+  .console .bar .dots i{width:10px;height:10px;border-radius:50%;display:block}
+  .console .bar .dots i:nth-child(1){background:#DA5A3C}
+  .console .bar .dots i:nth-child(2){background:#E3A72F}
+  .console .bar .dots i:nth-child(3){background:#2FA36B}
+  .console .bar .u{font-family:var(--mono);font-size:12px;color:#7E7EA8;margin-left:8px}
+  .tabs{display:flex;gap:4px;padding:12px 14px 0;border-bottom:1px solid rgba(255,255,255,.08);flex-wrap:wrap}
+  .tab{font-family:var(--disp);font-weight:500;font-size:14px;color:#8A8AB0;background:none;border:none;
+    padding:10px 16px;cursor:pointer;border-radius:8px 8px 0 0;position:relative;transition:color .2s}
+  .tab:hover{color:#CFCFE8}
+  .tab.active{color:#fff;background:rgba(255,255,255,.05)}
+  .tab.active::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:2px;background:var(--accent)}
+  .panel{padding:26px;display:none;animation:fade .35s ease}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* dashboard panel */
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media(max-width:680px){.tiles{grid-template-columns:1fr 1fr}}
+  .tile{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:18px}
+  .tile .n{font-family:var(--disp);font-size:30px;font-weight:700;color:#fff;letter-spacing:-.02em}
+  .tile .l{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#8A8AB0;margin-top:6px}
+  .tile .trend{font-size:11px;color:var(--green);font-family:var(--mono);margin-top:8px}
+  .apps{margin-top:20px;border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden}
+  .apphead,.approw{display:grid;grid-template-columns:1.6fr 1.2fr 1fr auto;gap:12px;align-items:center;padding:13px 18px}
+  .apphead{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#7E7EA8;background:rgba(255,255,255,.03)}
+  .approw{border-top:1px solid rgba(255,255,255,.06);font-size:14px;color:#D5D5E8}
+  .approw .co{color:#fff;font-weight:500}
+  .approw .role{color:#9A9AC0;font-size:13px}
+  .st{font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:100px;display:inline-block;font-weight:700;letter-spacing:.03em}
+  .st.applied{background:rgba(91,91,240,.16);color:#A6A6FF}
+  .st.screen{background:rgba(227,167,47,.16);color:#F0C97A}
+  .st.interview{background:rgba(47,163,107,.16);color:#7FE0B2}
+  .st.offer{background:rgba(47,163,107,.28);color:#B6F5D6}
+  .st.rejected{background:rgba(218,90,60,.16);color:#F0A18E}
+  .st.ghosted{background:rgba(255,255,255,.08);color:#9A9AC0}
+  .addbtn{margin-top:16px;background:var(--accent);color:#fff;border:none;font-family:var(--disp);font-weight:600;font-size:14px;
+    padding:11px 18px;border-radius:9px;cursor:pointer;transition:transform .12s,filter .2s}
+  .addbtn:hover{filter:brightness(1.1)}
+  .addbtn:active{transform:scale(.97)}
+
+  /* tailor panel */
+  .tailor{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:760px){.tailor{grid-template-columns:1fr}}
+  .box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:18px}
+  .box .h{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#8A8AB0;margin-bottom:12px}
+  .jd{font-size:13.5px;color:#B9B9CE;line-height:1.7}
+  .jd mark{background:rgba(91,91,240,.3);color:#CFCFFF;padding:1px 3px;border-radius:3px}
+  .resume-line{font-size:14px;color:#D5D5E8;padding:9px 0;border-top:1px solid rgba(255,255,255,.06);transition:all .4s}
+  .resume-line:first-child{border-top:none}
+  .resume-line.hit{color:#fff}
+  .resume-line mark{background:rgba(47,163,107,.28);color:#B6F5D6;padding:1px 4px;border-radius:3px}
+  .tailorbtn{grid-column:1/-1;justify-self:start;background:var(--accent);color:#fff;border:none;font-family:var(--disp);font-weight:600;
+    font-size:14px;padding:11px 20px;border-radius:9px;cursor:pointer;margin-top:4px}
+  .tailorbtn:hover{filter:brightness(1.1)}
+  .tailorbtn:disabled{opacity:.5;cursor:default}
+
+  /* ghost panel */
+  .ghost-intro{font-size:14px;color:#9A9AC0;margin-bottom:16px;max-width:60ch}
+  .listing{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 18px;margin-bottom:12px;
+    display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;transition:border-color .3s}
+  .listing .li-co{color:#fff;font-weight:500;font-size:15px}
+  .listing .li-meta{font-family:var(--mono);font-size:11.5px;color:#8A8AB0;margin-top:4px}
+  .verdict{font-family:var(--mono);font-size:11px;font-weight:700;padding:6px 12px;border-radius:100px;text-align:center;min-width:78px;opacity:0;transition:opacity .4s}
+  .verdict.show{opacity:1}
+  .verdict.g{background:rgba(47,163,107,.18);color:#7FE0B2;border:1px solid rgba(47,163,107,.4)}
+  .verdict.a{background:rgba(227,167,47,.18);color:#F0C97A;border:1px solid rgba(227,167,47,.4)}
+  .verdict.r{background:rgba(218,90,60,.18);color:#F0A18E;border:1px solid rgba(218,90,60,.4)}
+  .li-reason{grid-column:1/-1;font-size:13px;color:#9A9AC0;padding-top:8px;border-top:1px solid rgba(255,255,255,.06);display:none}
+  .li-reason.show{display:block}
+  .scanbtn{background:var(--accent);color:#fff;border:none;font-family:var(--disp);font-weight:600;font-size:14px;
+    padding:11px 20px;border-radius:9px;cursor:pointer;margin-top:4px}
+  .scanbtn:hover{filter:brightness(1.1)}
+  .scanbtn:disabled{opacity:.5;cursor:default}
+
+  /* footer */
+  footer{padding:56px 0;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+  footer .fw{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+  footer .mono{font-family:var(--mono);font-size:12px}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    html{scroll-behavior:auto}
+    .verdict{opacity:1}
+  }
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>Pipeline</div>
+    <nav class="topnav">
+      <a href="#understand">Problem</a>
+      <a href="#mvp">MVP</a>
+      <a href="#flow">Flow</a>
+      <a href="#ai">AI</a>
+      <a href="#feature">The Feature</a>
+      <a href="#demo">Live Demo</a>
+    </nav>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="kick eyebrow">Product Case Study · AI Job Application Assistant</div>
+    <h1>Applying to 200 jobs shouldn't feel like a <em>second job.</em></h1>
+    <p class="lede">Job hunting quietly became full-time work. This is a product that lets people apply at volume without giving up the personalization that actually gets replies, and finally shows them what's working.</p>
+    <div class="herometa">
+      <span class="tag">Thought Process</span>
+      <span class="tag">Prioritization</span>
+      <span class="tag">AI Integration</span>
+      <span class="tag">+ Live MVP</span>
+    </div>
+
+    <!-- signature pipeline -->
+    <div class="pipe" aria-hidden="true">
+      <div class="rail"><span class="runner"></span></div>
+      <div class="nodes">
+        <div class="node on"><span class="pip"></span><span class="lbl">Applied</span></div>
+        <div class="node"><span class="pip"></span><span class="lbl">Screening</span></div>
+        <div class="node"><span class="pip"></span><span class="lbl">Interview</span></div>
+        <div class="node"><span class="pip"></span><span class="lbl">Offer</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- 01 UNDERSTANDING -->
+<section id="understand">
+  <div class="wrap">
+    <div class="sechead">
+      <div class="num">01</div>
+      <div><h2>Product Understanding</h2><div class="q">Problem · Audience · Why not do it manually</div></div>
+    </div>
+    <div class="prose">
+      <p class="lead">To land one offer today you often need 100 to 200 applications. Done properly, each one costs 3 to 5 minutes. That's hundreds of hours.</p>
+      <p>The real trap is that the two things that actually get interviews, <strong>applying in volume</strong> and <strong>applying personally</strong>, pull against each other. By hand you get one or the other, never both. So people burn out, start firing off generic resumes, and watch their response rate quietly collapse.</p>
+      <p><strong>Who it's for.</strong> The core user is the high-volume applicant: recent grads and early-career switchers, who have the most applications to send and the least leverage. Then mid-career switchers and passive seekers who want to stay on the market without it eating their week. It's deliberately not for senior execs, who hire through their network and apply in small numbers.</p>
+      <p><strong>Why choose it over applying manually.</strong> It breaks the volume-versus-personalization tradeoff. AI handles the tailoring at scale, automation clears the busywork, and the dashboard gives you the one thing manual applying never does: a clear read on what's actually working.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 MVP -->
+<section id="mvp">
+  <div class="wrap">
+    <div class="sechead">
+      <div class="num">02</div>
+      <div><h2>MVP Planning</h2><div class="q">Version 1 in two weeks · build vs postpone</div></div>
+    </div>
+    <div class="prose"><p class="lead">Two weeks isn't enough to build everything, and trying to would be the wrong instinct. V1's job is one thing: a core loop people trust. Track, tailor, measure.</p></div>
+    <div class="cols">
+      <div class="card build">
+        <h3><span class="mk"></span>Build first</h3>
+        <ul>
+          <li><b>Application tracker + status pipeline</b><br><span>The backbone. Everyone needs it, pure logic, zero AI risk.</span></li>
+          <li><b>Multiple resumes + AI tailoring per JD</b><br><span>The core AI value, and it's contained: text in, text out, user reviews first.</span></li>
+          <li><b>Basic analytics</b><br><span>Sent, response rate, interview rate, pending. Almost free once tracking exists.</span></li>
+          <li><b>Assisted job add</b><br><span>Paste a JD or URL instead of auto-discovering everything on day one.</span></li>
+        </ul>
+      </div>
+      <div class="card hold">
+        <h3><span class="mk"></span>Postpone</h3>
+        <ul>
+          <li><b>Auto job discovery from LinkedIn</b><br><span>Anti-bot walls, ToS exposure, breaks on every layout change.</span></li>
+          <li><b>Auto-apply on the user's behalf</b><br><span>The most dangerous feature to ship early. Every form differs, failures are silent, one bad submission loses trust for good.</span></li>
+          <li><b>Auto-sending recruiter outreach</b><br><span>Deliverability, spam law, email-finding accuracy. Semi-automate later with approve-before-send.</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="prose" style="margin-top:24px"><p>Everything postponed is legally risky, technically fragile, or catastrophic when it misfires. You earn the right to automate the scary parts by first being reliable at the boring ones.</p></div>
+  </div>
+</section>
+
+<!-- 03 FLOW -->
+<section id="flow">
+  <div class="wrap">
+    <div class="sechead">
+      <div class="num">03</div>
+      <div><h2>Product Flow</h2><div class="q">How it works from the user's side</div></div>
+    </div>
+    <div class="flow">
+      <div class="step"><div class="sn">01</div><div><h3>Onboard</h3><p>Upload your resume or resumes, set target roles, locations, and filters.</p></div></div>
+      <div class="step"><div class="sn">02</div><div><h3>Add jobs</h3><p>Paste a JD or URL in V1, with an auto-discovered feed arriving later.</p></div></div>
+      <div class="step"><div class="sn">03</div><div><h3>Tailor</h3><p>For each job, AI rewrites the resume to fit the JD and drafts a note. You review and edit before anything is final.</p></div></div>
+      <div class="step"><div class="sn">04</div><div><h3>Apply</h3><p>One-click assisted apply, or export, and the application is logged automatically.</p></div></div>
+      <div class="step"><div class="sn">05</div><div><h3>Track</h3><p>Everything lands on the dashboard with a status: Applied, Screening, Interview, then Offer, Rejected, or Ghosted.</p></div></div>
+      <div class="step"><div class="sn">06</div><div><h3>Learn</h3><p>Analytics and the Ghost Job Detector feed back into what you apply to next.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 AI -->
+<section id="ai">
+  <div class="wrap">
+    <div class="sechead">
+      <div class="num">04</div>
+      <div><h2>AI Integration</h2><div class="q">Where it belongs, and where it doesn't</div></div>
+    </div>
+    <div class="prose"><p class="lead">AI handles the fuzzy, language-shaped judgment calls. Plain code handles anything with one correct answer. Knowing where not to use AI is as much a design decision as knowing where to use it.</p></div>
+    <div class="cols">
+      <div class="card yes">
+        <h3><span class="mk"></span>Use AI here</h3>
+        <ul>
+          <li><b>Resume tailoring per JD</b><br><span>Rewriting, reordering, aligning keywords.</span></li>
+          <li><b>Drafting recruiter outreach</b><br><span>Personalized notes that still read human.</span></li>
+          <li><b>Parsing a JD</b><br><span>Pulling out requirements, checking eligibility.</span></li>
+          <li><b>Ghost Job Detector</b><br><span>Reading language and pattern signals in a listing.</span></li>
+        </ul>
+      </div>
+      <div class="card no">
+        <h3><span class="mk"></span>Don't use AI here</h3>
+        <ul>
+          <li><b>Dashboard + analytics math</b><br><span>It's arithmetic. An LLM here is slower, pricier, and a hallucination waiting to happen.</span></li>
+          <li><b>Deduplication + date handling</b><br><span>Deterministic logic does it perfectly.</span></li>
+          <li><b>Reminders + email scheduling</b><br><span>Plumbing, not judgment.</span></li>
+          <li><b>Status tracking + storage</b><br><span>One correct answer, so no model needed.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 CHALLENGES -->
+<section id="challenges">
+  <div class="wrap">
+    <div class="sechead">
+      <div class="num">05</div>
+      <div><h2>Challenges</h2><div class="q">The five biggest, and how I'd handle them</div></div>
+    </div>
+    <div class="chal">
+      <div class="ch"><div class="ct"><span class="n">01</span>Discovery and scraping at scale</div>
+        <div class="cp">LinkedIn, Naukri, and Indeed run aggressive anti-bot defenses, and scraping breaks their terms and their layouts constantly. <b>Start user-initiated:</b> paste a URL, or a browser extension that reads the page the user is already on, which isn't scraping. Use official APIs where they exist and fail gracefully.</div></div>
+      <div class="ch"><div class="ct"><span class="n">02</span>Auto-apply reliability</div>
+        <div class="cp">Every form differs and failures are silent, so the user thinks they applied when they didn't. <b>No full auto-apply in V1.</b> Assisted autofill with a human confirm, and template the big ATS platforms first since Workday, Greenhouse, and Lever cover most postings. Log every attempt.</div></div>
+      <div class="ch"><div class="ct"><span class="n">03</span>Recruiter email accuracy and legality</div>
+        <div class="cp">Wrong addresses, spam flags, and GDPR exposure all live here. <b>Verified email-finding with confidence scores,</b> a human approve-before-send step, sending limits and warm-up, and one-click opt-out. No bulk blasting, ever.</div></div>
+      <div class="ch"><div class="ct"><span class="n">04</span>AI making things up on resumes</div>
+        <div class="cp">An LLM inventing experience the candidate doesn't have can cost them the job and their credibility. <b>Constrain the model to facts already in the user's own resume,</b> so it's retrieval-grounded rewriting rather than free generation. Show the diffs and require a review before anything is sent.</div></div>
+      <div class="ch"><div class="ct"><span class="n">05</span>Cost and latency at scale</div>
+        <div class="cp">Every tailor and parse is an LLM call, and across hundreds of applications and many users that becomes real money and a sluggish experience. <b>Cache hard,</b> use a small cheap model for parsing and save the strong model for final user-facing copy, batch background work, and call AI only on a user action.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 FEATURE -->
+<section id="feature">
+  <div class="wrap">
+    <div class="sechead">
+      <div class="num">06</div>
+      <div><h2>One Feature Nobody Asked For</h2><div class="q">The thing that makes it stand out</div></div>
+    </div>
+    <div class="feature">
+      <div class="fx">Ghost Job Detector</div>
+      <h3>Every rival helps you apply to more jobs. None protect your effort.</h3>
+      <p>A trust layer that scores each listing for how real it actually is, before you spend a personalized application on it. It reads repost age, vague JDs with no hiring manager named, missing salary, the same role blasted across dozens of locations, and staffing-agency churn.</p>
+      <p>The output is dead simple: one flag, one reason.</p>
+      <div class="flags">
+        <span class="flag"><span class="d" style="background:var(--green)"></span>Green · spend your best effort</span>
+        <span class="flag"><span class="d" style="background:var(--amber)"></span>Amber · proceed with caution</span>
+        <span class="flag"><span class="d" style="background:var(--red)"></span>Red · likely not real</span>
+      </div>
+      <p>It inverts the whole category. Everyone else optimizes for quantity going out. This optimizes the quality of where your energy goes. It's the rare feature that's genuinely on the user's side.</p>
+      <div class="roadmap">
+        <div class="rm"><b>Rejection Autopsy →</b><p>Uses your own outcome data to spot the pattern behind your rejections and ghostings, then hands you one concrete fix. Turns a sender into a coach.</p></div>
+        <div class="rm"><b>Warm-Intro Finder →</b><p>Surfaces 2nd-degree connections at a target company and drafts the ask, so a cold application quietly becomes a warm one.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 STACK -->
+<section id="stack">
+  <div class="wrap">
+    <div class="sechead">
+      <div class="num">07</div>
+      <div><h2>Tech Stack</h2><div class="q">What I'd build it on, and why</div></div>
+    </div>
+    <div class="stack">
+      <div class="sr"><div class="k">Frontend</div><div class="v">React + Tailwind. <span>The dashboard is the product surface, so a fast component-driven UI matters most here.</span></div></div>
+      <div class="sr"><div class="k">Backend</div><div class="v">FastAPI on Python. <span>Async, quick to build, and shares a language with the whole AI and data layer.</span></div></div>
+      <div class="sr"><div class="k">Data</div><div class="v">Postgres for structured data, pgvector or Chroma for resume and JD embeddings. <span>Powers retrieval-grounded tailoring.</span></div></div>
+      <div class="sr"><div class="k">AI Layer</div><div class="v">An LLM API for tailoring, outreach, and JD parsing, plus embeddings for matching. <span>A RAG pattern grounds every rewrite in the user's own resume so the model can't fabricate.</span></div></div>
+      <div class="sr"><div class="k">Automation</div><div class="v">A browser extension to capture jobs, Playwright for assisted autofill. <span>On the major ATS platforms first.</span></div></div>
+      <div class="sr"><div class="k">Infra</div><div class="v">A job queue (Celery or RQ) for background parsing and batch tailoring, with caching. <span>Keeps cost and latency in check.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE DEMO -->
+<section id="demo" class="demo-sec">
+  <div class="wrap">
+    <div class="sechead">
+      <div class="num">08</div>
+      <div><h2>Live MVP</h2><div class="q">Bonus · a working proof of concept, not a mockup</div></div>
+    </div>
+    <div class="prose">A tiny interactive slice of V1. Add an application, watch a resume re-tailor to a JD, and run the Ghost Detector on real-looking listings. Everything below is clickable.</div>
+
+    <div class="console">
+      <div class="bar">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <span class="u">pipeline · Mohammed Mummayiz</span>
+      </div>
+      <div class="tabs">
+        <button class="tab active" data-t="dash">Dashboard</button>
+        <button class="tab" data-t="tailor">Tailor Resume</button>
+        <button class="tab" data-t="ghost">Ghost Detector</button>
+      </div>
+
+      <!-- dashboard -->
+      <div class="panel active" id="p-dash">
+        <div class="tiles">
+          <div class="tile"><div class="n" id="t-sent">147</div><div class="l">Applications</div><div class="trend">▲ 12 this week</div></div>
+          <div class="tile"><div class="n">18%</div><div class="l">Response rate</div><div class="trend">▲ 3% vs last</div></div>
+          <div class="tile"><div class="n">6%</div><div class="l">Interview rate</div><div class="trend" style="color:#8A8AB0">~ steady</div></div>
+          <div class="tile"><div class="n" id="t-pend">41</div><div class="l">Pending</div><div class="trend" style="color:#8A8AB0">awaiting reply</div></div>
+        </div>
+        <div class="apps">
+          <div class="apphead"><div>Company</div><div>Role</div><div>Applied</div><div>Status</div></div>
+          <div id="approws">
+            <div class="approw"><div><span class="co">Razorpay</span></div><div class="role">Frontend Intern</div><div>2d ago</div><div><span class="st interview">Interview</span></div></div>
+            <div class="approw"><div><span class="co">Zomato</span></div><div class="role">SDE Intern</div><div>4d ago</div><div><span class="st screen">Screening</span></div></div>
+            <div class="approw"><div><span class="co">Postman</span></div><div class="role">Product Eng</div><div>5d ago</div><div><span class="st applied">Applied</span></div></div>
+            <div class="approw"><div><span class="co">Swiggy</span></div><div class="role">Frontend Intern</div><div>1w ago</div><div><span class="st offer">Offer</span></div></div>
+            <div class="approw"><div><span class="co">Freshworks</span></div><div class="role">UI Engineer</div><div>1w ago</div><div><span class="st ghosted">Ghosted</span></div></div>
+          </div>
+        </div>
+        <button class="addbtn" id="addapp">+ Add application</button>
+      </div>
+
+      <!-- tailor -->
+      <div class="panel" id="p-tailor">
+        <div class="tailor">
+          <div class="box">
+            <div class="h">Job Description · Frontend Intern</div>
+            <div class="jd">We need someone strong in <mark>React</mark> and <mark>TypeScript</mark> who can build <mark>accessible</mark>, <mark>responsive</mark> interfaces and work with <mark>REST APIs</mark>. Bonus for <mark>design systems</mark> experience.</div>
+          </div>
+          <div class="box">
+            <div class="h">Your resume · <span id="tailor-state">generic</span></div>
+            <div id="resume-body">
+              <div class="resume-line">Built web apps using JavaScript and various frameworks.</div>
+              <div class="resume-line">Made websites that work on phones and desktops.</div>
+              <div class="resume-line">Connected front-end code to back-end services.</div>
+            </div>
+          </div>
+          <button class="tailorbtn" id="tailorbtn">Tailor to this JD →</button>
+        </div>
+      </div>
+
+      <!-- ghost -->
+      <div class="panel" id="p-ghost">
+        <div class="ghost-intro">Four listings you were about to apply to. Run the detector before you spend a tailored application on a posting that might not be real.</div>
+        <div id="listings">
+          <div class="listing" data-v="g" data-reason="Named hiring manager, posted 3 days ago, salary listed. This one is worth your best effort.">
+            <div><div class="li-co">Razorpay · Frontend Intern</div><div class="li-meta">Posted 3d ago · salary listed · HM named</div></div>
+            <div class="verdict g">GREEN</div>
+            <div class="li-reason"></div>
+          </div>
+          <div class="listing" data-v="a" data-reason="Live for 47 days and reposted twice. Could be a slow pipeline, could be evergreen. Apply, but don't over-invest.">
+            <div><div class="li-co">Generic Tech Pvt Ltd · Software Engineer</div><div class="li-meta">Posted 47d ago · reposted 2x · no salary</div></div>
+            <div class="verdict a">AMBER</div>
+            <div class="li-reason"></div>
+          </div>
+          <div class="listing" data-v="r" data-reason="Same role posted across 30+ cities, vague JD, no team named, live 90+ days. Classic evergreen ghost listing.">
+            <div><div class="li-co">Staffing Solutions Co · Multiple Roles</div><div class="li-meta">Posted 90d ago · 30+ locations · vague JD</div></div>
+            <div class="verdict r">RED</div>
+            <div class="li-reason"></div>
+          </div>
+          <div class="listing" data-v="g" data-reason="Small team, specific JD, responds to applicants within a week per reviews. Strong signal.">
+            <div><div class="li-co">Postman · Product Engineer</div><div class="li-meta">Posted 5d ago · specific JD · fast responder</div></div>
+            <div class="verdict g">GREEN</div>
+            <div class="li-reason"></div>
+          </div>
+        </div>
+        <button class="scanbtn" id="scanbtn">Scan all listings</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap fw">
+    <div>Product Case Study · AI Job Application Assistant</div>
+    <div class="mono">Prepared for the Product Round · Submitted by Mohammed Mummayiz</div>
+  </div>
+</footer>
+
+<script>
+  // tabs
+  document.querySelectorAll('.tab').forEach(function(tab){
+    tab.addEventListener('click',function(){
+      document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
+      document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active')});
+      tab.classList.add('active');
+      document.getElementById('p-'+tab.dataset.t).classList.add('active');
+    });
+  });
+
+  // dashboard: add application
+  var sampleAdds=[
+    {co:'Notion',role:'Frontend Intern',st:'applied',lbl:'Applied'},
+    {co:'CRED',role:'UI Engineer',st:'applied',lbl:'Applied'},
+    {co:'Groww',role:'SDE Intern',st:'screen',lbl:'Screening'},
+    {co:'Meesho',role:'Product Eng',st:'applied',lbl:'Applied'}
+  ];
+  var addIdx=0;
+  document.getElementById('addapp').addEventListener('click',function(){
+    var a=sampleAdds[addIdx%sampleAdds.length];addIdx++;
+    var row=document.createElement('div');
+    row.className='approw';row.style.opacity='0';
+    row.innerHTML='<div><span class="co">'+a.co+'</span></div><div class="role">'+a.role+'</div><div>just now</div><div><span class="st '+a.st+'">'+a.lbl+'</span></div>';
+    var rows=document.getElementById('approws');
+    rows.insertBefore(row,rows.firstChild);
+    requestAnimationFrame(function(){row.style.transition='opacity .4s';row.style.opacity='1'});
+    var sent=document.getElementById('t-sent');sent.textContent=parseInt(sent.textContent)+1;
+    var pend=document.getElementById('t-pend');pend.textContent=parseInt(pend.textContent)+1;
+  });
+
+  // tailor
+  var tailored=false;
+  document.getElementById('tailorbtn').addEventListener('click',function(){
+    if(tailored)return;tailored=true;this.disabled=true;this.textContent='Tailored ✓';
+    document.getElementById('tailor-state').textContent='tailored to JD';
+    var newLines=[
+      'Built <mark>accessible</mark>, <mark>responsive</mark> interfaces in <mark>React</mark> and <mark>TypeScript</mark>.',
+      'Shipped <mark>responsive</mark> layouts tested across mobile and desktop breakpoints.',
+      'Integrated front-end components with <mark>REST APIs</mark> and a shared <mark>design system</mark>.'
+    ];
+    var lines=document.querySelectorAll('#resume-body .resume-line');
+    lines.forEach(function(line,i){
+      setTimeout(function(){
+        line.style.opacity='0';
+        setTimeout(function(){line.innerHTML=newLines[i];line.classList.add('hit');line.style.opacity='1'},220);
+      },i*260);
+    });
+  });
+
+  // ghost detector
+  var scanned=false;
+  document.getElementById('scanbtn').addEventListener('click',function(){
+    if(scanned)return;scanned=true;this.disabled=true;this.textContent='Scan complete ✓';
+    var items=document.querySelectorAll('#listings .listing');
+    items.forEach(function(it,i){
+      setTimeout(function(){
+        var v=it.querySelector('.verdict');v.classList.add('show');
+        var r=it.querySelector('.li-reason');r.textContent=it.dataset.reason;r.classList.add('show');
+        var col=it.dataset.v==='g'?'rgba(47,163,107,.4)':it.dataset.v==='a'?'rgba(227,167,47,.4)':'rgba(218,90,60,.4)';
+        it.style.borderColor=col;
+      },i*450);
+    });
+  });
+</script>
+</body>
+</html>
